@@ -34,6 +34,7 @@ try {
 
 // Skills contract
 const EXPECTED_SKILLS = [
+  'gravitas-thinking',
   'reference-first-builds',
   'game-direction-and-scope', 'opening-and-login-animation', 'game-ui-menus-and-hud',
   'touch-controls-and-input', 'game-feel-and-juice', 'godot-android-pipeline',
@@ -62,6 +63,7 @@ for (const folder of skillFolders) {
 
 // Scripts that skills promise
 for (const script of [
+  'skills/gravitas-thinking/scripts/plan-check.mjs',
   'skills/game-direction-and-scope/scripts/new-game.mjs',
   'skills/godot-android-pipeline/scripts/check-android-env.mjs',
   'skills/free-assets-and-licence-check/scripts/licence-check.mjs',

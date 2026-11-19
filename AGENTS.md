@@ -18,6 +18,13 @@ game. Read this first.
 
 ## Working discipline
 
+The discipline in full lives in
+[skills/gravitas-thinking](skills/gravitas-thinking/SKILL.md), adapted from
+Gravitas (MIT): six working agreements, planning depth by risk, and a
+verification hierarchy. Its [adapters](skills/gravitas-thinking/adapters/)
+brief Gemini, Claude, ChatGPT or any other model with the same rules. The
+short version:
+
 1. **Declare your write scope.** Before editing, state the files you plan to
    create or change. Stay inside it; expand it explicitly if the work
    demands more.
@@ -40,10 +47,11 @@ game. Read this first.
 
 ## The first session with a new game
 
-1. Read `WORKFLOW.md`. If the brief names an existing game, read
-   `skills/reference-first-builds/SKILL.md` next; otherwise
-   `skills/game-direction-and-scope/SKILL.md`.
-2. Draft the one-page direction doc with the human; do not start coding
-   before Gate 0 passes.
+1. Read `WORKFLOW.md` and `skills/gravitas-thinking/SKILL.md`. If the brief
+   names an existing game, read `skills/reference-first-builds/SKILL.md`
+   next; otherwise `skills/game-direction-and-scope/SKILL.md`.
+2. Write the full plan with the human from
+   `skills/gravitas-thinking/templates/game-plan.md`. Do not start coding
+   before Gate P passes: `plan-check.mjs` runs clean on the plan.
 3. Copy `examples/godot-hello-game/` as the project skeleton.
 4. Build the core loop ugly. Prototype gate first, pretty later.

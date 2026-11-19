@@ -16,3 +16,4 @@ a requirement; engines and terms move.
 | OpenGameArt per-asset licences and attribution format | https://opengameart.org/content/faq |
 | Freesound CC0 / CC-BY 4.0 / CC-BY-NC 4.0 and credit format | https://freesound.org/help/faq/#licenses |
 | jsfxr procedural SFX generator | https://sfxr.me/ , https://github.com/grumdrig/jsfxr |
+| Gravitas project (working agreements, planning tiers, verification hierarchy) is MIT-licensed | https://github.com/udaysharmadev/Gravitas |

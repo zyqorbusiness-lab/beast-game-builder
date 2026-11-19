@@ -1,6 +1,6 @@
 # Skills
 
-Eleven self-contained skills, one per folder. Each `SKILL.md` follows the
+Thirteen self-contained skills, one per folder. Each `SKILL.md` follows the
 same contract: when to use it, the rules with numbers and reasons, and a
 pre-ship checklist. Scripts live in the skill's `scripts/` folder and run
 with Node >= 22 or Python 3, no dependencies.
@@ -19,8 +19,11 @@ with Node >= 22 or Python 3, no dependencies.
 | 10 | [audio-and-sound-effects](audio-and-sound-effects/SKILL.md) | Buses, SFX vs music, free sources, import settings | - |
 | 11 | [free-assets-and-licence-check](free-assets-and-licence-check/SKILL.md) | Asset source table, licence rules, credits format | `licence-check.mjs` |
 | 12 | [android-performance-and-qa](android-performance-and-qa/SKILL.md) | Budgets, profiling, device QA checklist | - |
+| 13 | [gravitas-thinking](gravitas-thinking/SKILL.md) | Full plan before code, six working agreements, verification hierarchy, per-model adapters | `plan-check.mjs` |
 
-Brief names an existing game? Start with
+Every game starts with a checked plan from
+[gravitas-thinking](gravitas-thinking/SKILL.md). Brief names an existing
+game? Start with
 [reference-first-builds](reference-first-builds/SKILL.md). Otherwise start
 with [game-direction-and-scope](game-direction-and-scope/SKILL.md).
 [WORKFLOW.md](../WORKFLOW.md) names which skill owns each step.

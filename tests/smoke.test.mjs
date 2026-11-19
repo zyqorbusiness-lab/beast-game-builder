@@ -12,6 +12,8 @@ const LICENCE_CHECK = join(root, 'skills/free-assets-and-licence-check/scripts/l
 const ENV_CHECK = join(root, 'skills/godot-android-pipeline/scripts/check-android-env.mjs');
 const VALIDATE = join(root, 'tools/validate.mjs');
 const CHECK_LINKS = join(root, 'tools/check-links.mjs');
+const PLAN_CHECK = join(root, 'skills/gravitas-thinking/scripts/plan-check.mjs');
+const PLAN_TEMPLATE = join(root, 'skills/gravitas-thinking/templates/game-plan.md');
 
 function run(script, args, { allowFail = false } = {}) {
   try {
@@ -105,6 +107,50 @@ test('licence-check.mjs --root flags asset files with no credits row', () => {
   const out = JSON.parse(run(LICENCE_CHECK, [file, '--root', dir, '--json'], { allowFail: true }));
   assert.equal(out.ok, false);
   assert.ok(out.errors.some((e) => e.includes('orphan.png')));
+});
+
+const PLAN_SECTIONS = [
+  'Fantasy', 'Core loop', 'First 10 seconds', 'References', 'Main control',
+  'Camera', 'Session length', 'Levels and progression',
+  'Characters and animation', 'UI and menus', 'Sound and music',
+  'Performance budget', 'Scope', 'Milestones', 'Kill criteria',
+  'Verification plan',
+];
+
+function filledPlan() {
+  return ['# Game plan - Flood Courier', ...PLAN_SECTIONS.map(
+    (s) => `## ${s}\n\nA real answer for ${s}, long enough to be a plan.\n`,
+  )].join('\n');
+}
+
+test('plan-check.mjs passes a fully filled plan', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'plan-'));
+  const file = join(dir, 'plan.md');
+  writeFileSync(file, filledPlan());
+  const out = JSON.parse(run(PLAN_CHECK, [file, '--json']));
+  assert.equal(out.ok, true);
+  assert.equal(out.found, PLAN_SECTIONS.length);
+  assert.equal(out.errors.length, 0);
+});
+
+test('plan-check.mjs fails the shipped template while it holds TODOs', () => {
+  // The template must fail until every placeholder is replaced; this pins
+  // the template and the checker to the same section list.
+  const out = JSON.parse(run(PLAN_CHECK, [PLAN_TEMPLATE, '--json'], { allowFail: true }));
+  assert.equal(out.ok, false);
+  assert.equal(out.found, PLAN_SECTIONS.length);
+  assert.ok(out.errors.length >= PLAN_SECTIONS.length - 1);
+  assert.throws(() => run(PLAN_CHECK, [PLAN_TEMPLATE]));
+});
+
+test('plan-check.mjs fails a plan with missing sections', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'plan-'));
+  const file = join(dir, 'plan.md');
+  writeFileSync(file, '# Game plan - Half Done\n\n## Fantasy\n\nYou are a courier in a flooding city.\n');
+  const out = JSON.parse(run(PLAN_CHECK, [file, '--json'], { allowFail: true }));
+  assert.equal(out.ok, false);
+  assert.ok(out.errors.some((e) => e.includes('missing section: "Kill criteria"')));
+  assert.ok(out.errors.some((e) => e.includes('missing section: "Verification plan"')));
 });
 
 test('check-android-env.mjs reports JSON on any machine', () => {

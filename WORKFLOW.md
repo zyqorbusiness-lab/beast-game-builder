@@ -4,6 +4,23 @@ The loop every game in this toolkit follows. Each step names the skill that
 owns it and the gate that must pass before moving on. Skipping a gate is how
 projects die at 80% done.
 
+## First: the full plan, checked
+
+Skill: [gravitas-thinking](skills/gravitas-thinking/SKILL.md)
+
+No engine opens before the plan exists. Copy
+[templates/game-plan.md](skills/gravitas-thinking/templates/game-plan.md)
+into the game folder as `plan.md` and fill every section: fantasy, core
+loop, first 10 seconds, references, controls, camera, session length,
+levels, characters and animation, UI, sound, performance budget, scope,
+milestones, kill criteria and the verification plan. The loop from here is
+plan, playable test, checks, improve; the skill's six working agreements
+govern every step below, and its adapters brief whichever model does the
+work.
+
+**Gate P:** `node skills/gravitas-thinking/scripts/plan-check.mjs path/to/game/plan.md`
+passes with zero errors. A plan with TODO markers is not a plan.
+
 ## 0. Direction (half a page, not a novel)
 
 Skill: [game-direction-and-scope](skills/game-direction-and-scope/SKILL.md)

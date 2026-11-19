@@ -1,10 +1,13 @@
 # Beast Game Builder
 
 One free toolkit for designing and building real Android games with an AI
-coding agent: **11 craft skills** that teach the work, a **runnable Godot
+coding agent: **13 craft skills** that teach the work, a **runnable Godot
 example game** built from text and code only (no binary assets, CI executes
 it), **licence and environment check scripts**, and a **workflow** with
-evidence gates before anything ships.
+evidence gates before anything ships. Every build starts from a full
+written plan, checked by a script, under a model-neutral working
+discipline adapted from [Gravitas](https://github.com/udaysharmadev/Gravitas)
+(MIT).
 
 Companion to [beast-website-builder](https://github.com/zyqorbusiness-lab/beast-website-builder):
 that repo builds premium websites, this one builds games. Same house rules:
@@ -39,14 +42,19 @@ godot --headless --path examples/godot-hello-game --import
 godot --headless --path examples/godot-hello-game --quit-after 120
 ```
 
-New game? Start with [WORKFLOW.md](WORKFLOW.md). Coding agent?
-[AGENTS.md](AGENTS.md) is your entry point.
+New game? Start with [WORKFLOW.md](WORKFLOW.md): the first gate is a
+filled [game plan](skills/gravitas-thinking/templates/game-plan.md) that
+passes `node skills/gravitas-thinking/scripts/plan-check.mjs path/to/game/plan.md`.
+Coding agent? [AGENTS.md](AGENTS.md) is your entry point. Briefing Gemini,
+Claude, ChatGPT or another model? Paste the matching adapter from
+[skills/gravitas-thinking/adapters/](skills/gravitas-thinking/adapters/).
 
 ## What's inside
 
-- **[skills/](skills/README.md)** - 12 self-contained skills. Each is a folder
+- **[skills/](skills/README.md)** - 13 self-contained skills. Each is a folder
   with a `SKILL.md` (rules, numbers, reasons), runnable scripts where a script
   is genuinely useful, and a pre-ship checklist. Covers the whole loop:
+  a plan-first working discipline with per-model adapters,
   reference-first builds for "like X" briefs, game direction and scope,
   opening/login animation, menus and HUD, touch controls,
   game feel, the Godot Android pipeline, the Unity route, the Blender

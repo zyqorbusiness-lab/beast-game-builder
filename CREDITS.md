@@ -12,6 +12,7 @@ for the format and the checker script.
 | All skills, scripts, docs and the example game code | Sujon Hoque (Zyqor Studio) | MIT | this repo |
 | Example game icon (`examples/godot-hello-game/icon.svg`) | Sujon Hoque (Zyqor Studio) | MIT | this repo |
 | All sounds in the example game | generated in code at runtime, no recordings | MIT | `examples/godot-hello-game/scripts/audio.gd` |
+| gravitas-thinking skill: working agreements, planning tiers, verification hierarchy | adapted from Gravitas by udaysharmadev and the GRAVITAS Contributors; game-build adaptation by Zyqor Studio | MIT | https://github.com/udaysharmadev/Gravitas |
 
 ## Tools this toolkit teaches (not bundled)
 
