@@ -1,0 +1,15 @@
+{
+  "name": "beast-game-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free toolkit for designing and building Android games: skills, a runnable Godot example, licence and environment checks.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "validate": "node tools/validate.mjs",
+    "check-links": "node tools/check-links.mjs",
+    "test": "node --test tests/smoke.test.mjs"
+  }
+}

@@ -1,0 +1,23 @@
+# NOTICE
+
+Beast Game Builder is original work by Sujon Hoque (Zyqor Studio), released
+under the MIT License (see LICENSE).
+
+This repository bundles no third-party code or binary assets. It references
+and links to third-party tools and asset sources, which keep their own
+licences:
+
+- Godot Engine - MIT, (c) 2014-present Godot Engine contributors,
+  (c) 2007-2014 Juan Linietsky, Ariel Manzur. https://godotengine.org/license/
+- Blender - GNU GPL v2 or later, Blender Foundation.
+  https://www.blender.org/about/license/
+- Unity - proprietary; Unity Personal free tier subject to eligibility at
+  https://unity.com/pricing
+- Kenney game assets - CC0 (public domain). https://kenney.nl/support
+- OpenGameArt - per-asset licences (CC0, CC-BY, CC-BY-SA, GPL and others).
+  https://opengameart.org/content/faq
+- Freesound - per-sound licences (CC0, CC-BY 4.0, CC-BY-NC 4.0).
+  https://freesound.org/help/faq/#licenses
+- jsfxr - procedural sound effect generator. https://github.com/grumdrig/jsfxr
+
+This is an independent bundle. No listed project endorses it.

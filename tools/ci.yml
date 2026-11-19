@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  node-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Repo self-check
+        run: npm run validate
+      - name: Smoke tests
+        run: npm test
+      - name: Markdown link check
+        run: npm run check-links
+
+  godot-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Godot 4.7.2
+        run: |
+          curl -sL -o godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.2-stable_linux.x86_64
+      - name: Import the example project (catches scene/resource errors)
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path examples/godot-hello-game --import
+      - name: Run the example for 120 frames (catches script errors)
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path examples/godot-hello-game --quit-after 120
+      - name: Run the gameplay scene directly for 90 frames
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path examples/godot-hello-game scenes/game.tscn --quit-after 90
