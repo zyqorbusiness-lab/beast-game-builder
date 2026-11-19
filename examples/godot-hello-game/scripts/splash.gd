@@ -8,7 +8,7 @@ var _finished := false
 
 
 func _ready() -> void:
-	var logo: Label = $Center/Logo
+	var logo: Label = $Center/VBox/Logo
 	logo.modulate.a = 0.0
 	var tween := create_tween()
 	tween.tween_property(logo, "modulate:a", 1.0, 0.3)\
