@@ -46,7 +46,8 @@ godot --headless --path examples/godot-hello-game --quit-after 120
   settings and credits panels, Play reaches the game, the joystick
   spawns under the thumb, dragging moves the player, release recentres,
   pause/resume works, main-menu returns without leaving the tree
-  paused). It needs a display server for GUI input:
+  paused). It needs a display server for GUI input, so CI runs it
+  under xvfb in the godot-example job. Locally:
 
   ```bash
   xvfb-run -a godot --path examples/godot-hello-game res://tests/interaction_test.tscn

@@ -72,7 +72,8 @@ Claude, ChatGPT or another model? Paste the matching adapter from
 - **CI** - the workflow at [tools/ci.yml](tools/ci.yml) (checked in at
   `.github/workflows/ci.yml`) runs on every
   push: repo validation, smoke tests, Markdown link check, and a headless
-  Godot job that imports the example project and runs it.
+  Godot job that imports the example project, runs it headless,
+  and runs the 16 GUI interaction checks under xvfb (a virtual display).
   Edit the workflow and keep the two copies in sync.
 
 ## The method in one paragraph
@@ -86,8 +87,9 @@ every asset with its licence. The full loop: [WORKFLOW.md](WORKFLOW.md).
 ## Honest scope
 
 - **Executed in this repo:** the Node scripts (validate, licence-check,
-  android-env-check, new-game scaffold) run in CI, and the Godot example is
-  imported and run headless in CI. That proves the project
+  android-env-check, new-game scaffold) run in CI, the Godot example is
+  imported and run headless in CI, and its 16 GUI interaction checks pass in
+  CI under xvfb. That proves the project
   loads and its scripts execute; it does not prove it is fun or bug-free on
   a phone. The Blender character script was executed with Blender 5.2.4 LTS
   and its exported .glb verified (mesh, rig, animation clip present).
