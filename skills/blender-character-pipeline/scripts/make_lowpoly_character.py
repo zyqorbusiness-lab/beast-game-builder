@@ -2,6 +2,13 @@
 # Study object for the beast-game-builder Blender character pipeline:
 # model -> armature -> skin -> animate (one looped wave) -> export.
 #
+# The body is built from overlapping blocks joined into ONE mesh, with
+# every joint (shoulders, neck, hips) embedded inside the neighbouring
+# block. That is what keeps the silhouette connected at rest and under
+# animation: automatic weights blend across the overlaps, so a rotating
+# limb never opens a gap. Disjoint floating blocks are the classic
+# beginner failure this script exists to avoid.
+#
 # Run headless:
 #   blender -b -P make_lowpoly_character.py -- --out /tmp/character.glb
 #
@@ -12,7 +19,7 @@
 import bpy
 import sys
 import math
-from mathutils import Vector
+from mathutils import Vector, Quaternion
 
 
 def parse_out_path():
@@ -29,7 +36,11 @@ def clean_scene():
 
 
 def add_block(name, location, scale):
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=location)
+    # size=2.0 cube, so `scale` is each axis's HALF-extent: a block at
+    # z=1.05 with scale z=0.50 spans z 0.55..1.55. The layout comments
+    # below all use half-extents; getting this wrong halves every part
+    # and turns designed overlaps into floating gaps.
+    bpy.ops.mesh.primitive_cube_add(size=2.0, location=location)
     obj = bpy.context.active_object
     obj.name = name
     obj.scale = scale
@@ -42,13 +53,29 @@ def add_block(name, location, scale):
 
 
 def build_body():
+    # Every part overlaps its neighbour; nothing floats.
     parts = []
-    parts.append(add_block("torso", (0, 0, 1.1), (0.35, 0.2, 0.45)))
-    parts.append(add_block("head", (0, 0, 1.75), (0.22, 0.2, 0.22)))
-    parts.append(add_block("arm_l", (-0.5, 0, 1.15), (0.12, 0.12, 0.4)))
-    parts.append(add_block("arm_r", (0.5, 0, 1.15), (0.12, 0.12, 0.4)))
-    parts.append(add_block("leg_l", (-0.15, 0, 0.35), (0.14, 0.14, 0.35)))
-    parts.append(add_block("leg_r", (0.15, 0, 0.35), (0.14, 0.14, 0.35)))
+    # Torso: z 0.55..1.55, x -0.38..0.38, y -0.22..0.22
+    parts.append(add_block("torso", (0, 0, 1.05), (0.38, 0.22, 0.50)))
+    # Pelvis: z 0.44..0.80, overlaps torso bottom and both legs.
+    parts.append(add_block("pelvis", (0, 0, 0.62), (0.32, 0.20, 0.18)))
+    # Neck: z 1.34..1.62, wide enough to read as a connector, embedded
+    # deep in both the torso top (1.55) and the head bottom (1.46).
+    parts.append(add_block("neck", (0, 0, 1.48), (0.13, 0.12, 0.14)))
+    # Head: z 1.46..1.94, overlaps the neck by 0.16.
+    parts.append(add_block("head", (0, 0, 1.70), (0.24, 0.22, 0.24)))
+    # Shoulder caps: centered on the shoulder pivot, half sunk into the
+    # torso. They rotate with the arm like a ball joint, so the shoulder
+    # stays connected through the whole swing.
+    parts.append(add_block("shoulder_l", (-0.26, 0, 1.42), (0.20, 0.18, 0.18)))
+    parts.append(add_block("shoulder_r", (0.26, 0, 1.42), (0.20, 0.18, 0.18)))
+    # Arms: inner end (x 0.22) reaches past the shoulder pivot into the
+    # chest. z 0.70..1.54.
+    parts.append(add_block("arm_l", (-0.36, 0, 1.12), (0.14, 0.14, 0.42)))
+    parts.append(add_block("arm_r", (0.36, 0, 1.12), (0.14, 0.14, 0.42)))
+    # Legs: tops (z 0.64) sunk into the pelvis. z 0.00..0.64.
+    parts.append(add_block("leg_l", (-0.14, 0, 0.32), (0.15, 0.15, 0.32)))
+    parts.append(add_block("leg_r", (0.14, 0, 0.32), (0.15, 0.15, 0.32)))
 
     # Join into one mesh (one skinned mesh per character, per the skill).
     for p in parts:
@@ -67,33 +94,35 @@ def build_armature():
     edit = arm.data.edit_bones
 
     spine = edit["Bone"]
-    spine.head = (0, 0, 0.7)
-    spine.tail = (0, 0, 1.5)
+    spine.head = (0, 0, 0.55)
+    spine.tail = (0, 0, 1.50)
     spine.name = "spine"
 
     head = edit.new("head")
-    head.head = (0, 0, 1.5)
+    head.head = (0, 0, 1.50)
     head.tail = (0, 0, 1.95)
     head.parent = spine
 
+    # Shoulder pivots sit deep inside the torso volume (x 0.24, well
+    # within the 0.38 half-width), centered in the shoulder cap blocks.
     arm_r = edit.new("arm_r")
-    arm_r.head = (0.3, 0, 1.4)
-    arm_r.tail = (0.55, 0, 1.0)
+    arm_r.head = (0.24, 0, 1.42)
+    arm_r.tail = (0.50, 0, 0.85)
     arm_r.parent = spine
 
     arm_l = edit.new("arm_l")
-    arm_l.head = (-0.3, 0, 1.4)
-    arm_l.tail = (-0.55, 0, 1.0)
+    arm_l.head = (-0.24, 0, 1.42)
+    arm_l.tail = (-0.50, 0, 0.85)
     arm_l.parent = spine
 
     leg_r = edit.new("leg_r")
-    leg_r.head = (0.15, 0, 0.7)
-    leg_r.tail = (0.15, 0, 0.05)
+    leg_r.head = (0.14, 0, 0.62)
+    leg_r.tail = (0.14, 0, 0.06)
     leg_r.parent = spine
 
     leg_l = edit.new("leg_l")
-    leg_l.head = (-0.15, 0, 0.7)
-    leg_l.tail = (-0.15, 0, 0.05)
+    leg_l.head = (-0.14, 0, 0.62)
+    leg_l.tail = (-0.14, 0, 0.06)
     leg_l.parent = spine
 
     bpy.ops.object.mode_set(mode="OBJECT")
@@ -101,33 +130,45 @@ def build_armature():
 
 
 def skin_mesh(body, arm):
-    # Automatic weights get a blocky character 90% there; a production
-    # character then needs manual weight-paint passes on the joints.
+    # Automatic weights over the overlapping blocks give smooth blended
+    # joints for free; a production character then adds manual
+    # weight-paint passes to sharpen the creases.
     body.select_set(True)
     arm.select_set(True)
     bpy.context.view_layer.objects.active = arm
     bpy.ops.object.parent_set(type="ARMATURE_AUTO")
 
 
+def world_axis_rotation(arm, bone_name, world_axis, angle):
+    # Pose-bone eulers are bone-local, which makes "raise the arm
+    # sideways" painful to express. Build the rotation about a world
+    # axis instead and convert it into the bone's local space.
+    bone = arm.pose.bones[bone_name]
+    rest_world = (arm.matrix_world @ bone.bone.matrix_local).to_quaternion()
+    world_q = Quaternion(world_axis, angle)
+    bone.rotation_mode = "QUATERNION"
+    bone.rotation_quaternion = rest_world.inverted() @ world_q @ rest_world
+
+
 def add_wave_animation(arm):
-    # One looped 24-frame wave: rotate the right arm bone up and down.
+    # One looped 24-frame wave: the right arm raises sideways-up (a
+    # rotation about the world's forward axis) and comes back down.
     bpy.context.view_layer.objects.active = arm
     bpy.ops.object.mode_set(mode="POSE")
-    bone = arm.pose.bones["arm_r"]
-    bone.rotation_mode = "XYZ"
 
     scene = bpy.context.scene
     scene.frame_start = 1
     scene.frame_end = 24
     scene.render.fps = 24
 
-    frames = [(1, 0.0), (7, -2.2), (13, 0.0), (19, -2.2), (24, 0.0)]
+    forward = Vector((0, 1, 0))  # character faces -Y; rotating about Y lifts sideways
+    frames = [(1, 0.0), (7, -1.9), (13, 0.0), (19, -1.9), (24, 0.0)]
     for frame, angle in frames:
-        bone.rotation_euler = (0.0, angle, 0.0)
-        bone.keyframe_insert(data_path="rotation_euler", frame=frame)
+        world_axis_rotation(arm, "arm_r", forward, angle)
+        bone = arm.pose.bones["arm_r"]
+        bone.keyframe_insert(data_path="rotation_quaternion", frame=frame)
 
-    # Linear-ish loops read better with smooth interpolation; set BEZIER
-    # handles automatically (default) and mark the action for export.
+    # Mark the action for export.
     action = arm.animation_data.action
     action.name = "wave"
     bpy.ops.object.mode_set(mode="OBJECT")

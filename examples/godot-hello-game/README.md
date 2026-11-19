@@ -41,9 +41,19 @@ godot --headless --path examples/godot-hello-game --quit-after 120
 - **Executed:** the repo's CI imports this project headless and runs it
   for 120 frames (the full splash into the menu), failing on any script
   or scene error. The same commands above run locally.
+- **Executed:** `tests/interaction_test.tscn` drives the real scenes
+  with synthesized input (16 checks: menu buttons open/close the
+  settings and credits panels, Play reaches the game, the joystick
+  spawns under the thumb, dragging moves the player, release recentres,
+  pause/resume works, main-menu returns without leaving the tree
+  paused). It needs a display server for GUI input:
+
+  ```bash
+  xvfb-run -a godot --path examples/godot-hello-game res://tests/interaction_test.tscn
+  ```
 - **Not executed:** on-device behaviour (touch feel, performance, audio
-  output) and Android export. Those need a phone and the pipeline in
-  [godot-android-pipeline](../../skills/godot-android-pipeline/SKILL.md).
+  output) and the Android APK export. The export pipeline is documented
+  in [godot-android-pipeline](../../skills/godot-android-pipeline/SKILL.md).
 
 ## Where to go next
 

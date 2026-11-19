@@ -64,9 +64,9 @@ node skills/godot-android-pipeline/scripts/check-android-env.mjs
 
 ## Honest notes
 
-- An APK **export** cannot run in this repo's CI (it needs the SDK), so
-  this pipeline is documented from official docs, not executed here. The
-  env checker runs everywhere and tells you the gaps on your machine.
+- The Android APK **export** is not executed in this toolkit; this
+  pipeline is documented from the official Godot docs. The env checker
+  runs anywhere and reports which export prerequisites are present.
 - "Could not install to device" with a package-name clash means an app
   with the same id but a different key is installed; uninstall it first
   (documented in the Godot docs).

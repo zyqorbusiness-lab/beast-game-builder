@@ -1,7 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1795074390
+::res://::1795075579
 icon.svg::CompressedTexture2D::3019454975518960865::1795074278::1795074390::1::::<><><>0<>0<>c2f1f5d48821f1332a0ea99942095fb4<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-README.md::TextFile::-1::1795074328::0::1::::<><><>0<>0<><>::
+README.md::TextFile::-1::1795075579::0::1::::<><><>0<>0<><>::
 ::res://scenes/::1795074852
 game.tscn::PackedScene::-1::1795074328::0::1::::<><><>0<>0<><>::res://scripts/game.gd<>res://scripts/virtual_joystick.gd
 menu.tscn::PackedScene::-1::1795074314::0::1::::<><><>0<>0<><>::res://scripts/menu.gd
@@ -12,3 +12,6 @@ game.gd::GDScript::211591008468809461::1795074290::0::1::::<>Node2D<><>0<>0<><>:
 menu.gd::GDScript::877525823135986085::1795074290::0::1::::<>Control<><>0<>0<><>::
 splash.gd::GDScript::5702348620302409239::1795074852::0::1::::<>Control<><>0<>0<><>::
 virtual_joystick.gd::GDScript::3975736186428346480::1795074290::0::1::::<>Control<><>0<>0<><>::
+::res://tests/::1795075579
+interaction_test.gd::GDScript::5111654782392886553::1795075579::0::1::::<>Node<><>0<>0<><>::
+interaction_test.tscn::PackedScene::-1::1795075465::0::1::::<><><>0<>0<><>::res://tests/interaction_test.gd

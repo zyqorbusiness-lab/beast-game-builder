@@ -16,9 +16,12 @@ teaches you more about game art than ten tutorials watched.
 
 1. **Block out the shape.** Start from primitives (cubes, UV spheres),
    never from sculpting. Use a Mirror modifier so you model one side.
-   Target low-poly for phones: 500-5,000 triangles for a character reads
-   clean and renders fast; dense meshes are for close-up cinematics, not
-   gameplay.
+   Join the parts into one mesh with every joint overlapped (shoulders
+   and neck sunk into the torso, hips into the pelvis): floating blocks
+   with air between them look fine in a still and tear apart the moment
+   a bone rotates. Target low-poly for phones: 500-5,000 triangles for
+   a character reads clean and renders fast; dense meshes are for
+   close-up cinematics, not gameplay.
 2. **Apply scale before anything downstream** (`Ctrl+A` > Scale). Export
    scale bugs (100x too big/small in the engine) are almost always
    unapplied scale.
@@ -45,8 +48,9 @@ teaches you more about game art than ten tutorials watched.
 ## Headless example script
 
 `scripts/make_lowpoly_character.py` builds a small rigged low-poly
-humanoid (block body, head, arms, legs, armature, one looping wave
-animation) and exports `character.glb`, entirely from code:
+humanoid (overlapping blocks joined into one connected mesh, armature
+with the shoulder pivots inside the torso, one looping wave animation)
+and exports `character.glb`, entirely from code:
 
 ```bash
 blender -b -P skills/blender-character-pipeline/scripts/make_lowpoly_character.py -- --out /tmp/character.glb
